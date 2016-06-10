@@ -15,12 +15,9 @@ def formatDate(date):
 	return datetime.strptime(date.lstrip(), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d %H:%M:%S %Y')
 
 def getMAC(MACADDRESS):
-	API = 'http://macvendors.co/api/%s'
-	r = requests.get(API % MACADDRESS)
-	x = r.json()
+	x = requests.get('http://macvendors.co/api/' + MACADDRESS).json()
 	if u'error' not in x[u'result']:
-		ret = unicodedata.normalize('NFKD', x[u'result'][u'company']).encode('ascii','ignore')
-		return ret
+		return unicodedata.normalize('NFKD', x[u'result'][u'company']).encode('ascii','ignore')	
 	elif u'error' in x[u'result']:
 		return "Unknown"
 
@@ -31,9 +28,10 @@ with open('file.csv' , 'rb') as csvfile:
 		if len(line) > 1:
 			if "Station" in line[0]:
 				lines.next()
-				print line[0]
 				with open('ParsedData.csv' , 'wb') as wf:
 					writer = csv.writer(wf)
+					header = ['MAC' , 'First Seen' , 'Last Seen' , 'Company']
+					writer.writerow(header)
 					for line in lines:
 						row = []
 						if len(line) > 1:
