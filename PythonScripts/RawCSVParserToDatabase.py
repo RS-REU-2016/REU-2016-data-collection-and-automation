@@ -17,6 +17,14 @@ def getMAC(MACADDRESS):
 	elif u'error' in x[u'result']:
 		return "Unknown"
 
+def myMAC(iface):
+	words = commands.getoutput("ifconfig" + iface).split()
+	if "HWaddr" in words:
+		return words[words.index("HWaddr") + 1]
+	else:
+		return 'NULL'
+
+
 with open('file.csv' , 'rb') as csvfile:
 	lines = csv.reader(csvfile)
 	lines.next()
@@ -24,16 +32,12 @@ with open('file.csv' , 'rb') as csvfile:
 		if len(line) > 1:
 			if "Station" in line[0]:
 				lines.next()
-				with open('ParsedData.csv' , 'wb') as wf:
-					writer = csv.writer(wf)
-					header = ['MAC' , 'First Seen' , 'Last Seen' , 'Company']
-					writer.writerow(header)
-					for line in lines:
-						row = []
-						if len(line) > 1:
-							row = filterLine(line)
-							row.append(getMAC(line[0]))
-							print row
-							writer.writerow(row)
-							#
+				writer = csv.writer(wf)
+				for line in lines:
+					row = []
+					if len(line) > 1:
+						row = filterLine(line)
+						row.extend((getMAC(line[0]),myMAC("eth0")))
+						print row
+						#push into databse from here on out
 
