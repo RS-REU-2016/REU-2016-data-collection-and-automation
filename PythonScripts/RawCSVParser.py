@@ -12,7 +12,7 @@ def filterLine(line):
 	return r
 
 def formatDate(date):
-	return datetime.strptime(date.lstrip(), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d %H:%M.%S %Y')
+	return datetime.strptime(date.lstrip(), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d %H:%M:%S %Y')
 
 def getMAC(MACADDRESS):
 	API = 'http://macvendors.co/api/%s'
