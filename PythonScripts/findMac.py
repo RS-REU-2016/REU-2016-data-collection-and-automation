@@ -8,5 +8,5 @@ def myMAC(iface):
 		return 'NULL'
 
 
-if __name__ = "__main__":
-	print myMAC("wlan0")
+
+print myMAC("wlan0")
