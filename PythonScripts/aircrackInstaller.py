@@ -6,8 +6,7 @@ subprocess.call(["sudo","apt-get","-y" ,"install" , "libssl-dev" , "git" , "rfki
 subprocess.call(["wget" , "http://download.aircrack-ng.org/aircrack-ng-1.2-rc4.tar.gz"])
 subprocess.call(["tar", "-zxvf" , "aircrack-ng-1.2-rc4.tar.gz"])
 subprocess.call(["rm" , "aircrack-ng-1.2-rc4.tar.gz"])
-subprocess.call(["cd" , "aircrack-ng-1.2-rc4"])
-subprocess.call("make")
+subprocess.call(["make", "-C" , "aircrack-ng-1.2-rc4/"])
 subprocess.call(["sudo" , "make" , "install"])
 subprocess.call(["sudo" , "airodump-ng-oui-update"])
 
