@@ -6,30 +6,27 @@
 
 		#db columns
 		public $id;
-		public $Node;
-		public $MAC;
-		public $FirstSeenD;
-		public $FirstSeenT;
-		public $LastSeenD;
-		public $LastSeenT;
+		public $node;
+		public $mac;
+		public $firstseen;
+		public $lastseen;
+		public $company
 
 		public function __construct($params){
 			$this->node = $params['Node'];
 			$this->mac = $params['MAC'];
-			$this->firstseenDate = $params['FirstSeenD'];
-			$this->firstseenTime = $params['FirstSeenT'];
-			$this->lastseenDate = $params['LastSeenD'];
-			$this->LastSeenTime = $params['LastSeenT'];
+			$this->firstseen = $params['FirstSeen'];
+			$this->lastseen = $params['LastSeen'];
+			$this->company = $params['Company'];
 		}
 
 		function copyFromRow($row) {
 			$this->id = $row['id'];
 			$this->node = $row['Node'];
 			$this->mac = $row['MAC'];
-			$this->firstseenDate = $row['FirstSeenD'];
-			$this->firstseenTime = $row['FirstSeenT'];
-			$this->lastseenDate = $row['LastSeenD'];
-			$this->LastSeenTime = $row['LastSeenT'];
+			$this->firstseen = $row['FirstSeen'];
+			$this->lastseen = $row['LastSeen'];
+			$this->company = $row['Company'];
 		}
 
 		function findByMac($id){
@@ -55,16 +52,15 @@
 		function save(){
 			if(!$this->id) {
 				$sql = "INSERT INTO ". Device::$tableName 
-					." (Node, MAC, FirstSeenD, FirstSeenT, LastSeenD, LastSeenT) " 
-					." VALUES(?, ?, ?, ?, ?, ?)";
+					." (Node, MAC, FirstSeen, LastSeen, Company) " 
+					." VALUES(?, ?, ?, ?, ?)";
 
 				$stmt = Device::$dbh->prepare($sql);
 				$stmt->bindParam(1 , $this->node);
 				$stmt->bindParam(2 , $this->mac);
-				$stmt->bindParam(3 , $this->firstseenDate);
-				$stmt->bindParam(4 , $this->firstseenTime);
-				$stmt->bindParam(5 , $this->lastseenDate);
-				$stmt->bindParam(6 , $this->lastseenTime);
+				$stmt->bindParam(3 , $this->firstseen);
+				$stmt->bindParam(4 , $this->lastseen);
+				$stmt->bindParam(5 , $this->company);
 				$stmt->execute();
 
 				$this->id = $dbh->lastInsertId();
