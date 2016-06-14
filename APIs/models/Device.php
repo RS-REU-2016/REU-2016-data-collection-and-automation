@@ -1,8 +1,7 @@
 <?php
 
 	class Device {
-	public static $tableName = 'RailCrossing_Clients';
-	public static $dbh = 'itslab'
+	public static $tableName = 'railwaycrossing_clients';
 
 		#db columns
 		public $id;
@@ -10,14 +9,14 @@
 		public $mac;
 		public $firstseen;
 		public $lastseen;
-		public $company
+		public $company;
 
 		public function __construct($params){
-			$this->node = $params['Node'];
-			$this->mac = $params['MAC'];
-			$this->firstseen = $params['FirstSeen'];
-			$this->lastseen = $params['LastSeen'];
-			$this->company = $params['Company'];
+			$this->node = $params['node'];
+			$this->mac = $params['mac'];
+			$this->firstseen = $params['firstseen'];
+			$this->lastseen = $params['lastseen'];
+			$this->company = $params['company'];
 		}
 
 		function copyFromRow($row) {
@@ -49,13 +48,13 @@
 			}
 		}
 
-		function save(){
+		function save($dbh){
 			if(!$this->id) {
 				$sql = "INSERT INTO ". Device::$tableName 
 					." (Node, MAC, FirstSeen, LastSeen, Company) " 
 					." VALUES(?, ?, ?, ?, ?)";
 
-				$stmt = Device::$dbh->prepare($sql);
+				$stmt = $dbh->prepare($sql);
 				$stmt->bindParam(1 , $this->node);
 				$stmt->bindParam(2 , $this->mac);
 				$stmt->bindParam(3 , $this->firstseen);
