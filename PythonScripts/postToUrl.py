@@ -1,13 +1,10 @@
 #!/usr/bin/python
 from datetime import datetime
-import csv, requests, json, unicodedata, sys, os , commands, MySQLdb
+import csv, requests, json, unicodedata, sys, os , commands
 
-#connect to local db for testing
-conn = MySQLdb.connect(host="129.93.64.220" , user="Rasp" , passwd="Rasp" , db="itslab")
-x = conn.cursor()
 
 #name of RaspNode
-nodeName = "1A"
+url = "localhost/"
 
 def filterLine(line):
 	r = []
@@ -18,7 +15,10 @@ def formatDate(date):
 	return datetime.strptime(date.lstrip(), '%Y-%m-%d %H:%M:%S').strftime('%a %b %d %H:%M:%S %Y')
 
 def getMAC(MACADDRESS):
-	x = requests.get('http://macvendors.co/api/' + MACADDRESS).json()
+	#one api   http://searchmac.com/api/raw/
+	#second api   http://macvendors.co/api/
+	#third option http://api.macvendors.com/
+	x = requests.get('http://api.macvendors.com/' + MACADDRESS)
 	if u'error' not in x[u'result']:
 		return unicodedata.normalize('NFKD', x[u'result'][u'company']).encode('ascii','ignore')	
 	elif u'error' in x[u'result']:
@@ -39,17 +39,8 @@ with open('file.csv' , 'rb') as csvfile:
 			if "Station" in line[0]:
 				lines.next()
 				for line in lines:
-					row = []
 					if len(line) > 1:
-						row = filterLine(line)
-						row.extend((getMAC(line[0]),myMAC("eth0")))
-						print row
-						#push into databse from here on out
-						try:
-							x.execute("""INSERT INTO railwaycrossing_clients (Node, MAC, FirstSeen, LastSeen, Company) VALUES (%s , %s , %s , %s ,%s)""",(nodeName , row[0] , row[1] , row[2] ,row[3]))
-							conn.commit()
-							print "works"
-						except:
-							conn.rollback()
-
-conn.close()
+						#row.extend((getMAC(line[0]),myMAC("eth0")))
+						payload = {'node' : 'node1' , 'mac' : line[0] , 'firstseen': formatDate(line[1]) , 'lastseen' : formatDate(line[2]), 'company' : getMAC(line[0]) }
+						print payload
+						#r = request.post(url , data=json.dumps())
