@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from datetime import datetime
-import csv, requests, json, unicodedata, sys, os , commands
+import csv, requests, json, unicodedata, sys, os , commands, urllib
 
 
 #name of RaspNode
@@ -18,11 +18,12 @@ def getMAC(MACADDRESS):
 	#one api   http://searchmac.com/api/raw/
 	#second api   http://macvendors.co/api/
 	#third option http://api.macvendors.com/
-	x = requests.get('http://api.macvendors.com/' + MACADDRESS)
-	if u'error' not in x[u'result']:
-		return unicodedata.normalize('NFKD', x[u'result'][u'company']).encode('ascii','ignore')	
-	elif u'error' in x[u'result']:
-		return "Unknown"
+	API = 'http://api.macvendors.com/%s'
+	vendor = urllib.urlopen(API % MACADDRESS).read()
+	if len(vendor) > 1:
+		return vendor
+	else:
+		return "Unkown"
 
 def myMAC(iface):
 	words = commands.getoutput("ifconfig" + iface).split()

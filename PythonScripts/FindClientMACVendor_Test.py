@@ -9,5 +9,8 @@ API = 'http://api.macvendors.com/%s'
 with open('ParsedData.csv' , 'r') as macfile:
 	MACS = csv.reader(macfile)
 	for mac in MACS:
-		u = urllib.urlopen(API % mac[0])
-		print u.read()
+		vendor = urllib.urlopen(API % mac[0]).read()
+		if len(vendor) > 1:
+			print vendor
+		else:
+			print "Unkown"
