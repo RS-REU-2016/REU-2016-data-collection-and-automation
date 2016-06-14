@@ -7,6 +7,4 @@ def myMAC(iface):
 	else:
 		return 'NULL'
 
-
-
 print myMAC("wlan0")

@@ -1,6 +1,13 @@
 #!/usr/bin/python
 from datetime import datetime
-import csv, requests, json, unicodedata, sys, os , commands
+import csv, requests, json, unicodedata, sys, os , commands, MySQLdb
+
+#connect to local db for testing
+conn = MySQLdb.connect(host="localhost" , user="Rasp" , passwd="Rasp" , db="itslab")
+x = conn.cursor()
+
+#name of RaspNode
+nodeName = "1A"
 
 def filterLine(line):
 	r = []
@@ -24,7 +31,6 @@ def myMAC(iface):
 	else:
 		return 'NULL'
 
-
 with open('file.csv' , 'rb') as csvfile:
 	lines = csv.reader(csvfile)
 	lines.next()
@@ -32,7 +38,6 @@ with open('file.csv' , 'rb') as csvfile:
 		if len(line) > 1:
 			if "Station" in line[0]:
 				lines.next()
-				writer = csv.writer(wf)
 				for line in lines:
 					row = []
 					if len(line) > 1:
@@ -40,4 +45,10 @@ with open('file.csv' , 'rb') as csvfile:
 						row.extend((getMAC(line[0]),myMAC("eth0")))
 						print row
 						#push into databse from here on out
+						try:
+							x.execute("""INSERT INTO railwaycrossing_clients (Node, MAC, FirstSeen, LastSeen, Company) VALUES (%s , %s , %s , %s ,%s)""",(nodeName , row[0] , row[1] , row[2] ,row[3]))
+							conn.commit()
+						except:
+							conn.rollback()
 
+conn.close()

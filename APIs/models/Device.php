@@ -1,8 +1,8 @@
 <?php
 
 	class Device {
-	public static $tableName = 'Clients';
-	public static $dbh = 'REU2016'
+	public static $tableName = 'RailCrossing_Clients';
+	public static $dbh = 'itslab'
 
 		#db columns
 		public $id;
@@ -13,14 +13,23 @@
 		public $LastSeenD;
 		public $LastSeenT;
 
+		public function __construct($params){
+			$this->node = $params['Node'];
+			$this->mac = $params['MAC'];
+			$this->firstseenDate = $params['FirstSeenD'];
+			$this->firstseenTime = $params['FirstSeenT'];
+			$this->lastseenDate = $params['LastSeenD'];
+			$this->LastSeenTime = $params['LastSeenT'];
+		}
+
 		function copyFromRow($row) {
-			$this->id = row['id'];
-			$this->node = row['Node'];
-			$this->mac = row['MAC'];
-			$this->firstseenDate = row['FirstSeenD'];
-			$this->firstseenTime = row['FirstSeenT'];
-			$this->lastseenDate = row['LastSeenD'];
-			$this->LastSeenTime = row['LastSeenT'];
+			$this->id = $row['id'];
+			$this->node = $row['Node'];
+			$this->mac = $row['MAC'];
+			$this->firstseenDate = $row['FirstSeenD'];
+			$this->firstseenTime = $row['FirstSeenT'];
+			$this->lastseenDate = $row['LastSeenD'];
+			$this->LastSeenTime = $row['LastSeenT'];
 		}
 
 		function findByMac($id){

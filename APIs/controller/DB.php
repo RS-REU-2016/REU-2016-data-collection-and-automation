@@ -1,6 +1,6 @@
 <?php
 try {
-	$dbh = new PDO( 'mysql:host=localhost;dbname=',
+	$dbh = new PDO( 'mysql:host=localhost;dbname=itslab',
 				'Rasp', 'Rasp',
 				array( PDO::ATTR_PERSISTENT => true ) );
     # make sure we get db errors!
