@@ -1,0 +1,49 @@
+#########################
+#	Tables in Database
+#########################
+
+NODES
+	- id			PrimaryKey
+	- MAC			Node Mac Address
+	- DESC			Description of Node Location
+
+DEVICES
+	- id			PrimaryKey
+	- NODE_ID		Which node registered this device for this record
+	- MAC 			Device Mac Address
+	- FirstSeen 	Date Time the Device was first seen at this Node Record
+	- LastSeen		Date Time the Device was last seen at this Node Record
+	- Company		Vendor which the MAC address belongs to
+
+#########################
+#	Routes for API
+#########################
+
+### GET Request Routes ###
+GET			/DEVICES				-Retreives a list of all Devices
+GET			/DEVICES/AA:AA:AA:AA	-Retreives list of records by a given MAC Address
+GET			/NODES/					-Retreives a list of all Nodes
+GET			/NODES/AA:AA:AA:AA		-Retreives a specific Node
+GET			/NOES/AA:AA:AA:AA/ALL/	-Retreives a list of all Devices logged by a specific NODE
+
+## POST Request Routes ###
+POST		/DEVICES 				-Creates a new Device record
+POST		/NODES 					-Creates a new Node record
+
+
+#########################
+#	ERROR CODES
+#########################
+
+200			OK
+201			CREATED
+204			NO CONTENT
+304			NOT MODIFIED
+400			BAD REQUEST
+401			UNAUTHORIZED
+403			FORBIDDEN
+404			NOT FOUND
+405			METHOD NOT ALLOWED
+410			GONE
+422			UNPROCESSABLE ENTITY
+429			TOO MANY REQUESTS

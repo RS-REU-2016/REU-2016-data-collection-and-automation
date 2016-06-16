@@ -4,7 +4,7 @@ import csv, requests, json, unicodedata, sys, os , commands, urllib
 
 
 #name of RaspNode
-url = "http://localhost/index.php"
+url = "http://localhost/"
 
 def filterLine(line):
 	r = []
@@ -44,5 +44,5 @@ with open('file.csv' , 'rb') as csvfile:
 						#row.extend((getMAC(line[0]),myMAC("eth0")))
 						payload = {'node' : 'node1' , 'mac' : line[0] , 'firstseen': formatDate(line[1]) , 'lastseen' : formatDate(line[2]), 'company' : getMAC(line[0]) }
 						#print payload
-						r = requests.post(url , data=payload)
+						r = requests.post(url , params=payload)
 						print r.text
