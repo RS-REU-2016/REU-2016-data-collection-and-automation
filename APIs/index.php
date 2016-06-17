@@ -1,21 +1,23 @@
 <?php
 
-/*
-    spl_autoload_register('apiAutoload');
-	function apiAutoload($classname)
-	{
-	    if (preg_match('/[a-zA-Z]+Controller$/', $classname)) {
-	        include __DIR__ . '/controllers/' . $classname . '.php';
-	        return true;
-	    } elseif (preg_match('/[a-zA-Z]+Model$/', $classname)) {
-	        include __DIR__ . '/models/' . $classname . '.php';
-	        return true;
-	    } elseif (preg_match('/[a-zA-Z]+View$/', $classname)) {
-	        include __DIR__ . '/views/' . $classname . '.php';
-	        return true;
-	    }
+	require_once('controllers/DB.php');
+	require_once('controllers/DevicesController.php');
+	require_once('controllers/NodesController.php');
+	require_once('models/DeviceModel.php');
+	require_once('models/NodeModel.php');
+	require_once('models/RequestModel.php');
+
+	// route the request to the right place
+	$request = new Request();
+	$controller_name = ucfirst($request->url_elements[1]) . 'Controller';
+	
+	if (class_exists($controller_name)) {
+	    $controller = new $controller_name();
+	    $action_name = strtolower($request->verb);
+	    $result = $controller->request($request,$dbh);
+	    print_r($result);
 	}
-*/
-	print_r ($_SERVER)
+	
+
 
 ?>

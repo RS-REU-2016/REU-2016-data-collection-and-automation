@@ -1,7 +1,7 @@
 <?php
 
 	class Device {
-	public static $tableName = 'railwaycrossing_clients';
+	public static $tableName = 'DEVICES';
 
 		#db columns
 		public $id;
@@ -51,7 +51,7 @@
 		function save($dbh){
 			if(!$this->id) {
 				$sql = "INSERT INTO ". Device::$tableName 
-					." (Node, MAC, FirstSeen, LastSeen, Company) " 
+					." (NODE_ID, MAC, FirstSeen, LastSeen, Company) " 
 					." VALUES(?, ?, ?, ?, ?)";
 
 				$stmt = $dbh->prepare($sql);

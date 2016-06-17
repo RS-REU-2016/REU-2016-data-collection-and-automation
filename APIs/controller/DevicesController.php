@@ -1,20 +1,30 @@
 <?php
-	class DevicesController extends router {
+	require_once('models/DeviceModel.php');
 
-		public function request() {
-			$method = $_SERVER['REQUEST_METHOD']
+	class DevicesController{
 
-			switch($method){
-				case 'GET':
+		public function request($request,$dbh) {
+			$method = $request->verb;
+
+			switch ($method) {
+				case "GET":
 					break;
-				case 'POST':
+				case "POST":
+					$device = new  Device($request->parameters);
+					$device->save($dbh);
+					return $device;
 					break;
-				case 'PUT':
+				case "PUT":
 					break;
-				case 'DEL':
+				case "DEL":
 					break;
+
+				default:
+					//should not go here
 			}
 		}
 
 	}
+
+	
 ?>
